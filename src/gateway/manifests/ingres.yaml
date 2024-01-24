@@ -4,11 +4,11 @@ metadata:
   name: gateway-ingress
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "0"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
 spec:
   rules:
-    - host: mp3converter.com
+    - host: mp3ify.com
       http:
         paths:
           - path: /
