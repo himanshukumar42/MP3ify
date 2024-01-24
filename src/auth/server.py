@@ -11,7 +11,7 @@ server.config["MYSQL_HOST"] = os.environ.get("MYSQL_HOST")
 server.config["MYSQL_USER"] = os.environ.get("MYSQL_USER")
 server.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD")
 server.config["MYSQL_DB"] = os.environ.get("MYSQL_DB")
-server.config["MYSQL_PORT"] = os.environ.get("MYSQL_PORT")
+server.config["MYSQL_PORT"] = int(os.environ.get("MYSQL_PORT"))
 
 
 @server.route("/login", methods=["POST"])
@@ -21,6 +21,7 @@ def login():
         return "missing credentials", 401
 
     # check db for username and password
+
     cur = mysql.connection.cursor()
     res = cur.execute(
         "SELECT email, password FROM user WHERE email=%s", (auth.username,)
@@ -59,13 +60,13 @@ def validate():
 
 def createJWT(username: str, secret: str, authz: bool):
     return jwt.encode(
-        payload={
+        {
             "username": username,
             "exp": datetime.now(tz=timezone.utc) + timedelta(days=1),
             "iat": datetime.utcnow(),
             "admin": authz,
         },
-        secret=secret,
+        secret,
         algorithm="HS256"
     )
 
